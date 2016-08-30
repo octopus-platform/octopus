@@ -1,7 +1,5 @@
 package octopus.server.ftpserver;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +14,8 @@ import org.apache.ftpserver.usermanager.impl.WritePermission;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import octopus.OctopusEnvironment;
+
 public class OctopusFTPServer {
 
 	private static final Logger logger = LoggerFactory
@@ -29,12 +29,12 @@ public class OctopusFTPServer {
 	ListenerFactory factory = new ListenerFactory();
 	ConnectionConfigFactory connectionConfigFactory = new ConnectionConfigFactory();
 
-	public void start(String octopusHome) throws FtpException
+	public void start() throws FtpException
 	{
 		factory.setPort(FTP_SERVER_PORT);
 		factory.setServerAddress(FTP_SERVER_HOST);
 
-		configureAnonymousLogin(octopusHome);
+		configureAnonymousLogin();
 
 		serverFactory.addListener("default", factory.createListener());
 
@@ -42,16 +42,15 @@ public class OctopusFTPServer {
 		server.start();
 	}
 
-	private void configureAnonymousLogin(String octopusHome) throws FtpException
+	private void configureAnonymousLogin() throws FtpException
 	{
 		connectionConfigFactory.setAnonymousLoginEnabled(true);
 		serverFactory.setConnectionConfig(connectionConfigFactory.createConnectionConfig());
 
 		BaseUser user = configureAnonymousUser();
+		String projectDirStr = OctopusEnvironment.PROJECTS_DIR.toString();
+		user.setHomeDirectory(projectDirStr);
 
-		Path path = Paths.get(octopusHome, "projects");
-		String homeDirectory = path.toString();
-		user.setHomeDirectory(homeDirectory);
 		serverFactory.getUserManager().save(user);
 	}
 

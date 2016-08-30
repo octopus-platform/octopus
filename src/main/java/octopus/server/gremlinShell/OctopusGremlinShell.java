@@ -1,11 +1,13 @@
 package octopus.server.gremlinShell;
 
 import java.io.IOException;
+import java.nio.file.Path;
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 
 import groovy.lang.GroovyShell;
+import octopus.OctopusEnvironment;
 import octopus.api.database.Database;
 import octopus.api.projects.OctopusProject;
 import octopus.api.projects.ProjectManager;
@@ -98,14 +100,15 @@ public class OctopusGremlinShell
 	{
 		try
 		{
-			loadRecursively(System.getProperty("OCTOPUS_HOME") + "/querylib/");
+			Path languagesDir = OctopusEnvironment.LANGUAGES_DIR;
+			loadRecursively(languagesDir.toString());
 		} catch (IOException e)
 		{
 			e.printStackTrace();
 		}
 	}
 
-	private void loadRecursively(String queryLibDir) throws IOException
+	private void loadRecursively(String languagesDir) throws IOException
 	{
 		SourceFileWalker walker = new OrderedWalker();
 		GroovyFileLoader listener = new GroovyFileLoader();
@@ -113,16 +116,11 @@ public class OctopusGremlinShell
 
 		walker.setFilenameFilter("*.groovy");
 		walker.addListener(listener);
-		walker.walk(new String[]{queryLibDir});
+		walker.walk(new String[]{languagesDir});
 	}
 
 	public Object execute(String code)
 	{
-		if (code.equals("querylib_reload"))
-		{
-			loadStandardQueryLibrary();
-			return new String("");
-		}
 
 		try
 		{

@@ -9,7 +9,7 @@ import octopus.server.restServer.OctopusRestServer;
 public class OctopusMain {
 
     static OctopusMain main;
-    String octopusHome;
+
 
     OctopusFTPServer ftpServer;
 
@@ -20,34 +20,11 @@ public class OctopusMain {
         main.startRestServer();
     }
 
-	public OctopusMain()
-    {
-		initializeOctopusHome();
-		tryToLoadConfigFile();
-    }
-
-    private void tryToLoadConfigFile()
-    {
-    	String configFilename = octopusHome + "/conf/octopus.conf";
-    	OctopusConfigFile configFile = new OctopusConfigFile(configFilename);
-    	configFile.transferToEnvironment();
-    }
-
-	private void initializeOctopusHome()
-	{
-		octopusHome = System.getProperty("OCTOPUS_HOME");
-
-        if (octopusHome == null)
-        {
-            throw new RuntimeException("System property OCTOPUS_HOME not defined.");
-        }
-	}
-
     private void startFTPServer()
     {
 		ftpServer = new OctopusFTPServer();
 		try {
-			ftpServer.start(octopusHome);
+			ftpServer.start();
 		} catch (FtpException| FtpServerConfigurationException e) {
 			System.out.println("Error starting Octopus");
 			System.out.println(e.getMessage());

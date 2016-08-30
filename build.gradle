@@ -15,6 +15,7 @@ if ( gradleVersionMajor < reguiredGradleVersionMajor ||
 }
 
 apply plugin: 'java'
+
 repositories { mavenCentral() }
 
 configurations {
@@ -42,10 +43,8 @@ dependencies{
 }
 
 task copyToLib(type: Copy) {
-    into "jars"
+    into "lib"
     from configurations.runtime
 }
 
-copyToLib.dependsOn subprojects.build
-build.dependsOn subprojects.build
 build.dependsOn copyToLib

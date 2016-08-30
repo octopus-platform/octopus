@@ -14,6 +14,7 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import octopus.OctopusEnvironment;
 import octopus.api.projects.OctopusProject;
 import octopus.api.projects.ProjectManager;
 import octopus.server.database.titan.TitanLocalDatabaseManager;
@@ -31,10 +32,8 @@ public class OctopusProjectManager
 
 	static
 	{
-		String projectDir = System.getProperty("octopus.projectdir");
-		Path path = Paths.get(System.getProperty("OCTOPUS_HOME"), projectDir);
 		try {
-			initialize(path);
+			initialize(OctopusEnvironment.PROJECTS_DIR);
 		} catch (IOException e) {
 			throw new RuntimeException("Error initializing OctopusProjectManager");
 		}

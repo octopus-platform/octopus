@@ -5,17 +5,10 @@ import java.nio.file.Paths;
 
 import org.json.JSONObject;
 
+import octopus.OctopusEnvironment;
 import octopus.server.pluginInterface.PluginLoader;
 
 public class PluginExecutor {
-
-	String pluginDir;
-
-	public PluginExecutor()
-	{
-		pluginDir = Paths.get(System.getProperty("OCTOPUS_HOME"),
-				System.getProperty("octopus.plugindir")).toString();
-	}
 
 	public Object executePlugin(String pluginName, String pluginClass)
 	{
@@ -24,6 +17,7 @@ public class PluginExecutor {
 
 	public Object executePlugin(String pluginName, String pluginClass, JSONObject settings)
 	{
+		String pluginDir = OctopusEnvironment.PLUGINS_DIR.toString();
 		Path path = Paths.get(pluginDir, pluginName).toAbsolutePath();
 		Plugin plugin = PluginLoader.load(path, pluginClass);
 
