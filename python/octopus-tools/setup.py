@@ -17,7 +17,8 @@ setup(
         'octopus.shell.config': 'octopus/shell/config'
     },
     package_data={
-        'octopus.shell': ['data/banner.txt']
+        'octopus.shell': ['data/banner.txt'],
+        'octopus.shell.config': ['data/octopus_shell.ini']
     },
     scripts=['scripts/octopus-project', 'scripts/octopus-plugin', 'scripts/octopus-shell']
 )
