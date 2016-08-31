@@ -1,3 +1,3 @@
-exStep = { args ->
-	delegate.nodeType
+sessionSteps["exStep"] = {
+    delegate.nodeType
 }
