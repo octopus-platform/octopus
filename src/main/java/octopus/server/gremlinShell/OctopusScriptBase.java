@@ -11,7 +11,7 @@ public abstract class OctopusScriptBase extends Script
 
 	public boolean newSessionStep(String name, Closure closure)
 	{
-		Map<String, Closure> sessionSteps = (Map<String, Closure>) getBinding().getVariable("sessionSteps");
+		Map<String, Closure> sessionSteps = getSessionSteps();
 		if (!sessionSteps.containsKey(name))
 		{
 			sessionSteps.put(name, closure);
@@ -20,10 +20,20 @@ public abstract class OctopusScriptBase extends Script
 		return false;
 	}
 
+	public void deleteSessionStep(String name)
+	{
+		getSessionSteps().remove(name);
+	}
+
 	private Closure getSessionStep(String name)
 	{
+		return getSessionSteps().get(name);
+	}
+
+	private Map<String, Closure> getSessionSteps()
+	{
 		Map<String, Closure> sessionSteps = (Map<String, Closure>) getBinding().getVariable("sessionSteps");
-		return sessionSteps.get(name);
+		return sessionSteps;
 	}
 
 }
