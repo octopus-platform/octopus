@@ -1,35 +1,29 @@
 package octopus.server.gremlinShell;
 
-import java.util.HashSet;
-import java.util.Set;
-
+import groovy.lang.Closure;
 import groovy.lang.Script;
+
+import java.util.Map;
 
 
 public abstract class OctopusScriptBase extends Script
 {
 
-	public Set<String> listSteps()
+	public boolean newSessionStep(String name, Closure closure)
 	{
-		// TODO
-		return new HashSet<String>();
-		// return Gremlin.getStepNames();
+		Map<String, Closure> sessionSteps = (Map<String, Closure>) getBinding().getVariable("sessionSteps");
+		if (!sessionSteps.containsKey(name))
+		{
+			sessionSteps.put(name, closure);
+			return true;
+		}
+		return false;
 	}
 
-	public Set<String> listSteps(String prefix)
+	private Closure getSessionStep(String name)
 	{
-		Set<String> steps = listSteps();
-		steps.removeIf(step -> !step.startsWith(prefix));
-		return steps;
+		Map<String, Closure> sessionSteps = (Map<String, Closure>) getBinding().getVariable("sessionSteps");
+		return sessionSteps.get(name);
 	}
 
-	public Set<?> listVariables()
-	{
-		return getBinding().getVariables().keySet();
-	}
-
-	public void removeVariable(String variable)
-	{
-		getBinding().getVariables().remove(variable);
-	}
 }

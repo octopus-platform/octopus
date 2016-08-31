@@ -1,3 +1,1 @@
-sessionSteps["exStep"] = {
-    delegate.nodeType
-}
+newSessionStep("exStep", { delegate.nodeType })

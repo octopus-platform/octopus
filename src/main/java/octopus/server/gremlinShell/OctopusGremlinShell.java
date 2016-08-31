@@ -1,5 +1,6 @@
 package octopus.server.gremlinShell;
 
+import groovy.lang.Closure;
 import groovy.lang.GroovyShell;
 import octopus.OctopusEnvironment;
 import octopus.api.database.Database;
@@ -55,7 +56,7 @@ public class OctopusGremlinShell
 				//////////////////////////////////
 				// This is the relevant addition
 //				+ "if(binding.variables.containsKey(name)){ def closure = binding.variables.get(name); closure.delegate = delegate; return \"$name\"(args); }\n"
-				+ "def closure = binding.getVariable(\"sessionSteps\").get(name); if (closure != null) { closure.delegate = delegate; return closure(args); }\n"
+				+ "def closure = getSessionStep(name); if (closure != null) { closure.delegate = delegate; return closure(args); }\n"
 				///////////////////////////////
 				+ "return ((GraphTraversal) delegate).values(name); }\n";
 
@@ -95,7 +96,7 @@ public class OctopusGremlinShell
 		g = graph.traversal();
 		this.shell.setVariable("graph", graph);
 		this.shell.setVariable("g", g);
-		this.shell.setVariable("sessionSteps", new HashMap());
+		this.shell.setVariable("sessionSteps", new HashMap<String, Closure>());
 	}
 
 	private void loadStandardQueryLibrary()
