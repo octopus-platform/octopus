@@ -166,7 +166,7 @@ wildcard searches.
 The `code` field, if present, will be treated as STRING content and
 indexed using a LUCENE String index. In particular, this means that
 fast lookups can be performed based on sub strings and regular
-expression searches using the `textContains*`-functions in Gremlin
+expression searches using the `text*`-functions in Gremlin
 `has` clauses.
 
 ## Edge-file format for the CSV Importer
