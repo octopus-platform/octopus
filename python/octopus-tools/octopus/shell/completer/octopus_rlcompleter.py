@@ -14,7 +14,8 @@ class OctopusShellCompleter(object):
             if self.context == 'traversal':
                 self.matches = self._get_step_matches(text)
             elif self.context == 'start':
-                self.matches = [x for x in ["g", "quit", "graph", "newSessionStep"] if x.startswith(text)]
+                # self.matches = [x for x in ["g", "quit", "graph", "newSessionStep"] if x.startswith(text)]
+                self.matches = self.get_binding_matches(text)
             else:
                 self.matches = []
 
@@ -22,6 +23,10 @@ class OctopusShellCompleter(object):
             return self.matches[state]
         except IndexError:
             return None
+
+    def get_binding_matches(self, text):
+        matches = self.shell.run_command("getBinding().getVariables().keySet()")
+        return [match for match in matches if match.startswith(text)]
 
     def _get_step_matches(self, text):
         buffer = readline.get_line_buffer()
