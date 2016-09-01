@@ -9,15 +9,10 @@ import java.util.Map;
 public abstract class OctopusScriptBase extends Script
 {
 
-	public boolean newSessionStep(String name, Closure closure)
+	public void newSessionStep(String name, Closure closure)
 	{
 		Map<String, Closure> sessionSteps = getSessionSteps();
-		if (!sessionSteps.containsKey(name))
-		{
-			sessionSteps.put(name, closure);
-			return true;
-		}
-		return false;
+		sessionSteps.put(name, closure);
 	}
 
 	public void deleteSessionStep(String name)
