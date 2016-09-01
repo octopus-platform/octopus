@@ -14,7 +14,6 @@ class OctopusShellCompleter(object):
             if self.context == 'traversal':
                 self.matches = self._get_step_matches(text)
             elif self.context == 'start':
-                # self.matches = [x for x in ["g", "quit", "graph", "newSessionStep"] if x.startswith(text)]
                 self.matches = self.get_binding_matches(text)
             else:
                 self.matches = []
