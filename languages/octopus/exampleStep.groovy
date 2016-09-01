@@ -1,1 +1,1 @@
-newSessionStep("exStep", { delegate.values("nodeType") })
+GraphTraversal.metaClass.exStep = { delegate.values("nodeType") }
