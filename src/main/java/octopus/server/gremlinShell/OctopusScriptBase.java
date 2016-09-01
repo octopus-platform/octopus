@@ -9,18 +9,13 @@ import java.util.Map;
 public abstract class OctopusScriptBase extends Script
 {
 
-	public void newSessionStep(String name, Closure closure)
+	public void addStep(String name, Closure closure)
 	{
 		Map<String, Closure> sessionSteps = getSessionSteps();
 		sessionSteps.put(name, closure);
 	}
 
-	public void deleteSessionStep(String name)
-	{
-		getSessionSteps().remove(name);
-	}
-
-	public Closure getSessionStep(String name)
+	public Closure getStep(String name)
 	{
 		return getSessionSteps().get(name);
 	}

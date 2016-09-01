@@ -43,7 +43,7 @@ public class OctopusGremlinShell
 		execute(cmd);
 
 		// This is the code responsible for the execution of session steps
-		cmd = "DefaultGraphTraversal.metaClass.methodMissing = { final String name, final def args -> def closure = getSessionStep(name); if (closure != null) { closure.delegate = delegate; return closure(args); } else { throw new MissingMethodException(name, this.class, args) } }";
+		cmd = "DefaultGraphTraversal.metaClass.methodMissing = { final String name, final def args -> def closure = getStep(name); if (closure != null) { closure.delegate = delegate; return closure(args); } else { throw new MissingMethodException(name, this.class, args) } }";
 		execute(cmd);
 	}
 
