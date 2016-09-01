@@ -20,5 +20,5 @@ setup(
         'octopus.shell': ['data/banner.txt'],
         'octopus.shell.config': ['data/octopus_shell.ini']
     },
-    scripts=['scripts/octopus-project', 'scripts/octopus-plugin', 'scripts/octopus-shell']
+    scripts=['scripts/octopus-project', 'scripts/octopus-plugin', 'scripts/octopus-shell', 'scripts/octopus-csvimport']
 )

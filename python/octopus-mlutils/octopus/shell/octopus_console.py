@@ -5,11 +5,15 @@ import sys
 
 from octopus.shell.completer.octopus_rlcompleter import OctopusShellCompleter
 from octopus.shell.config.config import config
+from octopus.shell.octopus_shell_utils import reload as _reload
 
 
 class OctopusInteractiveConsole(code.InteractiveConsole):
     def __init__(self, octopus_shell, locals=None):
-        super().__init__(locals=locals, filename="<console>")
+        def reload(path=config["steps"]["dir"]):
+            _reload(octopus_shell, path)
+
+        super().__init__(locals={"reload": reload}, filename="<console>")
         self.octopus_shell = octopus_shell
 
     def runsource(self, source, filename="<input>", symbol="single"):
@@ -18,16 +22,6 @@ class OctopusInteractiveConsole(code.InteractiveConsole):
 
         if source[0] == '!':
             return super().runsource(source[1:], filename, symbol)
-        if source[-1] == '?':
-            tail = source[:-1].rsplit('.', 1)[-1]
-            help_record = self.help.get_help_for_step(tail) if self.help else None
-            if help_record:
-                self.write(str(help_record))
-            else:
-                self.write("No help found for '{}'.".format(tail))
-            self.write('\n')
-            return False
-
         try:
             response = self.octopus_shell.run_command(source)
             if source == "quit":
