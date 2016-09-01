@@ -10,11 +10,13 @@ import octopus.server.importer.csv.ImportJob;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class CSVImporterPlugin extends OctopusProjectPlugin{
+public class CSVImporterPlugin extends OctopusProjectPlugin {
 
     @Override
     public void execute() throws Exception {
 
+    	System.out.println("Hello World");
+    	
         String projectName = getProjectName();
         String pathToProjecDir = getPathToProjectDir();
         String nodeFilename = Paths.get(pathToProjecDir, "nodes.csv").toString();
