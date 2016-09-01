@@ -20,7 +20,7 @@ public abstract class OctopusScriptBase extends Script
 		getSessionSteps().remove(name);
 	}
 
-	private Closure getSessionStep(String name)
+	public Closure getSessionStep(String name)
 	{
 		return getSessionSteps().get(name);
 	}

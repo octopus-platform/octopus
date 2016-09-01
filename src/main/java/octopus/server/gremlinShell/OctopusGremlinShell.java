@@ -1,12 +1,5 @@
 package octopus.server.gremlinShell;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.HashMap;
-
-import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Graph;
-
 import groovy.lang.Closure;
 import groovy.lang.GroovyShell;
 import octopus.OctopusEnvironment;
@@ -15,6 +8,12 @@ import octopus.api.projects.OctopusProject;
 import octopus.api.projects.ProjectManager;
 import octopus.server.gremlinShell.fileWalker.OrderedWalker;
 import octopus.server.gremlinShell.fileWalker.SourceFileWalker;
+import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
+import org.apache.tinkerpop.gremlin.structure.Graph;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.HashMap;
 
 public class OctopusGremlinShell
 {
@@ -40,21 +39,14 @@ public class OctopusGremlinShell
 
 	private void octopusSugarLoad()
 	{
-		// Hooking methodMissing after executing SugarLoader.load() fails for some reason,
-		// so, instead, we use our own SugarLoader.
+		String cmd = "GremlinLoader.load();";
+		execute(cmd);
 
-		String cmd = "GremlinLoader.load();\n";
-
-		// cmd += "Object.metaClass.methodMissing = { String name, args -> def x = name.substring(1); if(name.startsWith('_') && binding.variables.get(x)){ __.start().\"$x\"(args); } else \n throw new MissingMethodException(x, delegate, args)} \n";
-		// cmd += "GraphTraversal.metaClass.methodMissing = { final String name, final def args ->"
-				//////////////////////////////////
-				// This is the relevant addition
-		//		+ "def closure = getSessionStep(name); if (closure != null) { closure.delegate = delegate; return closure(args); }\n"
-				///////////////////////////////
-		//		+ "return ((GraphTraversal) delegate).values(name); }\n";
-
+		// This is the code responsible for the execution of session steps
+		cmd = "DefaultGraphTraversal.metaClass.methodMissing = { final String name, final def args -> def closure = getSessionStep(name); if (closure != null) { closure.delegate = delegate; return closure(args); } else { throw new MissingMethodException(name, this.class, args) } }";
 		execute(cmd);
 	}
+
 	public void initShell()
 	{
 		this.shell = new GroovyShell(new OctopusCompilerConfiguration());
